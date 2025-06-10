@@ -96,9 +96,9 @@ except (json.JSONDecodeError, ValidationError, TypeError) as e:
 
             Instructions:
             1. For each row, create an object with {model_json_schema}.
-            2. If a field is missing or invalid, infer a reasonable value.
+            2. If a field is missing or invalid, infer a reasonable value, but do not skip the row.
             3. Ensure the output is a valid JSON array, with no extra text.
-            4. Use the last error and response to determine how to fix the error.
+            4. Use the last error and response to determine how to fix the error:
                 Last error: {str(last_error)}
                 Last response: {last_response}
 
@@ -107,8 +107,6 @@ except (json.JSONDecodeError, ValidationError, TypeError) as e:
                 {{"name": "Alice", "age": 30, "email": "alice@example.com"}},
                 {{"name": "Bob", "age": 25, "email": "bob@example.com"}}
             ]
-
-
             """
         print("\n" + "="*50)	
         print(f"Attempt {attempt}: Improved Prompt & System Message")
