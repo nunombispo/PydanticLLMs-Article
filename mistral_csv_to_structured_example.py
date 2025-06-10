@@ -41,6 +41,7 @@ with open("example_incomplete.csv", "r", encoding="utf-8") as f:
 # -----------------------------
 # Initial Prompt Construction
 # -----------------------------
+model_json_schema = Person.model_json_schema()
 prompt = f"""
             Given the following CSV data, return a JSON array of objects with fields: {Person.model_json_schema()}
 
@@ -82,23 +83,22 @@ except (json.JSONDecodeError, ValidationError, TypeError) as e:
         # Improved system message for retries
         system_message = (
             "You are a data cleaning and structuring assistant. "
-            f"Your job is to convert CSV data into a JSON array of objects with the fields: {Person.model_json_schema()}"
+            f"Your job is to convert CSV data into a JSON array of objects with the fields: {model_json_schema}"
             "If any data is missing or invalid, infer reasonable values or skip the row. "
             "Always return valid JSON. Do not include any explanation, only the JSON array."
         )
         # Improved prompt with actionable instructions
         improved_prompt = f"""
-            Given the following CSV data, return a JSON array of objects with fields: {Person.model_json_schema()}
+            Given the following CSV data, return a JSON array of objects with fields: {model_json_schema}
 
             CSV:
             {csv_input}
 
             Instructions:
-            1. For each row, create an object with {Person.model_json_schema()}.
-            2. If a field is missing or invalid, infer a reasonable value or skip the row.
-            3. If a field is null, infer a reasonable value or skip the row.
-            4. Ensure the output is a valid JSON array, with no extra text.
-            5. If the last error is a validation error, use the last response to fix the error.
+            1. For each row, create an object with {model_json_schema}.
+            2. If a field is missing or invalid, infer a reasonable value.
+            3. Ensure the output is a valid JSON array, with no extra text.
+            4. Use the last error and response to determine how to fix the error.
                 Last error: {str(last_error)}
                 Last response: {last_response}
 
