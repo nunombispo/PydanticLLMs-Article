@@ -2,6 +2,8 @@
 
 This project demonstrates how to use the Mistral API in JSON mode to convert CSV data into structured JSON objects validated by a Pydantic model. It includes robust error handling and retry logic to ensure valid output.
 
+If these scripts were useful to you, consider donating to support the Developer Service Blog: https://buy.stripe.com/bIYdTrggi5lZamkdQW
+
 ## Features
 
 - Reads CSV data from a file
